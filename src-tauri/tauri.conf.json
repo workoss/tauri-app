@@ -18,7 +18,19 @@
       }
     ],
     "security": {
-      "csp": null
+      "headers": {
+        "Access-Control-Expose-Headers": "Tauri-Custom-Header",
+        "Tauri-Custom-Header": {
+          "key1": "'value1'"
+        }
+      },
+      "csp": {
+        "default-src": "'self' customprotocol: asset:",
+        "connect-src": "ipc: http://ipc.localhost",
+        "font-src": ["https://fonts.gstatic.com"],
+        "img-src": "'self' asset: http://asset.localhost blob: data:",
+        "style-src": "'unsafe-inline' 'self' https://fonts.googleapis.com"
+      }
     }
   },
   "bundle": {

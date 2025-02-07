@@ -85,5 +85,11 @@ export default defineConfig({
     },
     printFileSize: true,
     removeConsole: false,
+    bundleAnalyze: {
+      // analyzerMode: "static",
+      // openAnalyzer: false,
+      // reportFilename: `${resolve(__dirname, "src")}/../dist/report.html`,
+      // defaultSizes: "gzip",
+    },
   },
 });

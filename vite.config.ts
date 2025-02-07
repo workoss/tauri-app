@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import { resolve } from "path";
+// import { visualizer } from "rollup-plugin-visualizer";
 // import { assert } from "console";
 
 const host = process.env.TAURI_DEV_HOST;
@@ -14,6 +15,12 @@ export default defineConfig(async () => ({
     react({
       tsDecorators: true,
     }),
+    // visualizer({
+    //   filename: "./dist/report.html",
+    //   open: false,
+    //   gzipSize: true,
+    //   brotliSize: true,
+    // }),
   ],
 
   resolve: {

@@ -1,18 +1,31 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import tseslint from 'typescript-eslint'
+import pluginJs from '@eslint/js';
+import globals from 'globals';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import pluginReact from 'eslint-plugin-react';
+import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  { ignores: ['dist'] },
+  { ignores: ['dist', 'src-tauri'] },
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ['**/*.{ts,tsx}'],
-    languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
+    files: ['src/**/*.{mjs,cjs,ts,jsx,tsx}'],
+    settings: { react: { version: 'detect' } },
+    languageOptions: { globals: globals.browser },
+    extends: [
+      pluginJs.configs.recommended,
+      ...tseslint.configs.recommended,
+      pluginReact.configs.flat.recommended,
+      pluginReact.configs.flat['jsx-runtime'],
+    ],
+    rules: {
+      // '@typescript-eslint/no-unsafe-argument': 'error',
+      // '@typescript-eslint/no-unsafe-assignment': 'error',
+      // '@typescript-eslint/no-unsafe-call': 'error',
+      // '@typescript-eslint/no-unsafe-member-access': 'error',
+      // '@typescript-eslint/no-unsafe-return': 'error',
     },
+  },
+  {
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
@@ -25,4 +38,4 @@ export default tseslint.config(
       ],
     },
   },
-)
+);

@@ -12,7 +12,6 @@ tailwindcss-animate.css
 dist
 dist-ssr
 node_modules
-src-tauri
 public
 *.local
 

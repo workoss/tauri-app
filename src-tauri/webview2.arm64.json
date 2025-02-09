@@ -1,0 +1,39 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "app": {
+    "trayIcon": {
+      "id": "main",
+      "iconPath": "icons/icon.png"
+    }
+  },
+  "bundle": {
+    "targets": ["nsis"],
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": "",
+      "webviewInstallMode": {
+        "type": "fixedRuntime",
+        "path": "./Microsoft.WebView2.FixedVersionRuntime.133.0.3065.51.arm64/"
+      },
+      "nsis": {
+        "displayLanguageSelector": true,
+        "languages": ["SimpChinese", "English"],
+        "installMode": "perMachine",
+        "installerIcon": "icons/icon.ico",
+        "installerHooks": "./templates/windows-installer-hook.nsh"
+      },
+      "wix": {
+        "language": ["zh-CN", "en-US"]
+      }
+    }
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEUzQUREOTZCQkQ2QkU3MDAKUldRQTUydTlhOW10NDYvWU1EODE4VU45ZHVKbGtBSExaS3ozZzd3QXM4cDZoRFNsVTdoanZoRHAK",
+      "endpoints": [
+        "https://github.com/workoss/react-tauri/releases/download/update/update-fixed-webview2.json"
+      ]
+    }
+  }
+}

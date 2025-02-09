@@ -1,22 +1,23 @@
-import { defineConfig } from "@rsbuild/core";
-import { pluginReact } from "@rsbuild/plugin-react";
-import { resolve } from "path";
+import { defineConfig } from '@rsbuild/core';
+import { pluginReact } from '@rsbuild/plugin-react';
+import i18next from 'i18next';
+import { resolve } from 'path';
 
 const host = process.env.TAURI_DEV_HOST;
 
 export default defineConfig({
   html: {
-    template: "./index.html",
+    template: './index.html',
   },
   resolve: {
     alias: {
-      "@": resolve(__dirname, "src"),
+      '@': resolve(__dirname, 'src'),
     },
   },
   plugins: [pluginReact()],
   source: {
     entry: {
-      index: "./src/main.tsx",
+      index: './src/main.tsx',
     },
     define: {
       OS_ARCH: `"${process.arch}"`,
@@ -30,7 +31,7 @@ export default defineConfig({
     open: false,
     cors: true,
     publicDir: {
-      name: "./public",
+      name: './public',
     },
   },
   environments: {},
@@ -38,47 +39,49 @@ export default defineConfig({
     hmr: true,
     watchFiles: [
       {
-        paths: ["./src"],
+        paths: ['./src'],
       },
     ],
   },
   output: {
     distPath: {
-      root: "../dist",
-      js: "assets/",
-      jsAsync: "assets/",
-      css: "assets/",
-      svg: "assets/",
+      root: './dist',
+      js: 'js/',
+      jsAsync: 'js/',
+      css: 'css/',
+      svg: 'svg/',
     },
-    cleanDistPath: false,
+    cleanDistPath: 'auto',
     filenameHash: true,
     minify: !process.env.TAURI_DEBUG,
     sourceMap: !!process.env.TAURI_DEBUG,
   },
   performance: {
     chunkSplit: {
-      strategy: "custom",
+      strategy: 'custom',
       splitChunks: {
         cacheGroups: {
           react: {
             test: /node_modules[\\/](react|react-dom|react-router-dom)[\\/]/,
-            name: "react-vendor",
-            chunks: "all",
+            name: 'react-vendor',
+            chunks: 'all',
+            maxSize: 4096,
+          },
+          i18next: {
+            test: /node_modules[\\/](i18next|react-i18next)[\\/]/,
+            name: 'i18n-vendor',
+            chunks: 'all',
+            maxSize: 4096,
           },
           antd: {
-            test: /node_modules[\\/](@ant-design|antd)[\\/]/,
-            name: "antd-vendor",
-            chunks: "all",
-          },
-          charts: {
-            test: /node_modules[\\/](echarts|@antv)[\\/]/,
-            name: "charts-vendor",
-            chunks: "all",
+            test: /node_modules[\\/](@ant-design|antd|antd-style)[\\/]/,
+            name: 'antd-vendor',
+            chunks: 'all',
           },
           utils: {
-            test: /node_modules[\\/](axios|dayjs|lodash)[\\/]/,
-            name: "utils-vendor",
-            chunks: "all",
+            test: /node_modules[\\/](axios|dayjs)[\\/]/,
+            name: 'utils-vendor',
+            chunks: 'all',
           },
         },
       },

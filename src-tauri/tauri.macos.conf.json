@@ -1,0 +1,39 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "app": {
+    "trayIcon": {
+      "id": "main",
+      "iconAsTemplate": true,
+      "iconPath": "icons/icon.png",
+      "showMenuOnLeftClick": true
+    }
+  },
+  "bundle": {
+    "targets": ["app", "dmg"],
+    "macOS": {
+      "dmg": {
+        "appPosition": {
+          "x": 180,
+          "y": 170
+        },
+        "applicationFolderPosition": {
+          "x": 480,
+          "y": 170
+        },
+        "windowSize": {
+          "height": 400,
+          "width": 660
+        },
+        "windowPosition": {
+          "x": 200,
+          "y": 180
+        }
+      },
+      "frameworks": [],
+      "exceptionDomain": "",
+      "signingIdentity": "9DD8B0CBDD6D78089555FC3DC6F79B8BB720A432",
+      "entitlements": null,
+      "minimumSystemVersion": "10.13"
+    }
+  }
+}

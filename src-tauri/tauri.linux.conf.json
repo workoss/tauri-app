@@ -1,0 +1,28 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "app": {
+    "trayIcon": {
+      "id": "main",
+      "iconPath": "icons/icon.ico"
+    }
+  },
+  "bundle": {
+    "targets": ["deb", "rpm"],
+    "linux": {
+      "deb": {
+        "depends": ["openssl"],
+        "provides": ["workoss-desktop"],
+        "conflicts": ["workoss-desktop"],
+        "replaces": ["workoss-desktop"],
+        "desktopTemplate": ""
+      },
+      "rpm": {
+        "depends": ["openssl"],
+        "provides": ["workoss-desktop"],
+        "conflicts": ["workoss-desktop"],
+        "obsoletes": ["workoss-desktop"],
+        "desktopTemplate": ""
+      }
+    }
+  }
+}

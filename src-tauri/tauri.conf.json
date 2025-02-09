@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "react-tauri",
+  "productName": "Workoss Desktop",
   "version": "0.1.0",
-  "identifier": "com.workoss.app",
+  "identifier": "com.workoss.app.workoss-app",
   "build": {
     "beforeDevCommand": "pnpm dev",
     "devUrl": "http://localhost:1420",
@@ -30,6 +30,10 @@
         "font-src": ["https://fonts.gstatic.com"],
         "img-src": "'self' asset: http://asset.localhost blob: data:",
         "style-src": "'unsafe-inline' 'self' https://fonts.googleapis.com"
+      },
+      "assetProtocol": {
+        "enable": false,
+        "scope": []
       }
     }
   },
@@ -42,6 +46,23 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ]
+    ],
+    "resources": ["icons/icon.png"],
+    "publisher": "Workoss Desktop",
+    "copyright": "Copyright 2025",
+    "licenseFile": "../LICENSE",
+    "license": "MIT",
+    "category": "Developer Tools",
+    "shortDescription": "A React app built with Tauri",
+    "longDescription": "A React app built with Tauri - developer tools",
+    "createUpdaterArtifacts": true
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEUzQUREOTZCQkQ2QkU3MDAKUldRQTUydTlhOW10NDYvWU1EODE4VU45ZHVKbGtBSExaS3ozZzd3QXM4cDZoRFNsVTdoanZoRHAK",
+      "endpoints": [
+        "https://github.com/workoss/react-tauri/releases/latest/download/latest.json"
+      ]
+    }
   }
 }

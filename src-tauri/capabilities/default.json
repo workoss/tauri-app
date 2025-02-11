@@ -8,6 +8,15 @@
   "permissions": [
     "core:default",
     "opener:default",
-    "os:default"
+    "os:default",
+    "clipboard-manager:default",
+    "dialog:default",
+    "fs:default",
+    "http:default",
+    "log:default",
+    "notification:default",
+    "shell:default",
+    "store:default",
+    "upload:default"
   ]
 }

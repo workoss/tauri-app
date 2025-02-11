@@ -13,7 +13,7 @@
       "digestAlgorithm": "sha256",
       "timestampUrl": "",
       "webviewInstallMode": {
-        "type": "embedBootstrapper",
+        "type": "offlineInstaller",
         "silent": true
       },
       "nsis": {

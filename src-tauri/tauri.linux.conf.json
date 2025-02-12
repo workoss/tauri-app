@@ -14,14 +14,14 @@
         "provides": ["workoss-desktop"],
         "conflicts": ["workoss-desktop"],
         "replaces": ["workoss-desktop"],
-        "desktopTemplate": ""
+        "desktopTemplate": "./templates/workoss-desktop.desktop"
       },
       "rpm": {
         "depends": ["openssl"],
         "provides": ["workoss-desktop"],
         "conflicts": ["workoss-desktop"],
         "obsoletes": ["workoss-desktop"],
-        "desktopTemplate": ""
+        "desktopTemplate": "./templates/workoss-desktop.desktop"
       }
     }
   }

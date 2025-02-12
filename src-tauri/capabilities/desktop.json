@@ -6,7 +6,6 @@
     "autostart:default",
     "cli:default",
     "global-shortcut:default",
-    "process:default",
     "updater:default",
     "window-state:default"
   ]

@@ -63,6 +63,46 @@
       "endpoints": [
         "https://github.com/workoss/react-tauri/releases/latest/download/latest.json"
       ]
+    },
+    "shell": {
+      "open": true
+    },
+    "cli": {
+      "description": "react tauri example",
+      "args": [
+        {
+          "short": "c",
+          "name": "config",
+          "takesValue": true,
+          "description": "config path",
+          "possibleValues": ["config.toml", "config.json"]
+        },
+        {
+          "short": "v",
+          "name": "verbose",
+          "description": "Verbosity level"
+        }
+      ],
+      "subcommands": {
+        "run": {
+          "description": "Run the app",
+          "args": [
+            {
+              "name": "debug",
+              "description": "Run the app in debug mode"
+            },
+            {
+              "name": "release",
+              "description": "Run the app in release mode"
+            }
+          ]
+        }
+      }
+    },
+    "deep-link": {
+      "desktop": {
+        "schemes": ["workoss-app"]
+      }
     }
   }
 }

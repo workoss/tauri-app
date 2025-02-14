@@ -1,9 +1,18 @@
 mod cmd;
+mod config;
+mod error;
+mod hotkey;
 
-use cmd::*;
+#[cfg(desktop)]
+mod tray;
+
+use config::*;
+use hotkey::*;
+use tray::*;
+
 use serde::Serialize;
 
-use std::sync::OnceLock;
+use std::{panic, sync::OnceLock};
 use tauri::{
     webview::PageLoadEvent, Emitter, Listener, Manager as _, RunEvent, WebviewUrl,
     WebviewWindowBuilder,
@@ -11,6 +20,9 @@ use tauri::{
 use tauri_plugin_autostart::{MacosLauncher, ManagerExt as _};
 
 pub static APP: OnceLock<tauri::AppHandle> = OnceLock::new();
+
+pub type SetupHook = Box<dyn FnOnce(&mut tauri::App) -> Result<(), Box<dyn std::error::Error>> + Send>;
+pub type OnEvent = Box<dyn FnMut(&tauri::AppHandle, RunEvent)>;
 
 #[derive(Clone, Serialize)]
 struct Reply {
@@ -43,26 +55,29 @@ pub fn run() {
             .plugin(tauri_plugin_window_state::Builder::new().build())
             .setup(move |app| {
                 #[cfg(target_os = "macos")]
-                app.set_activation_policy(tauri::ActivationPolicy::Accessory);
+                {
+                    app.set_activation_policy(tauri::ActivationPolicy::Accessory);
+                }
 
                 // Get the autostart manager
                 let autostart_manager = app.autolaunch();
                 // Enable autostart
-                let _ = autostart_manager.enable();
+                // let _ = autostart_manager.enable();
                 // Check enable state
                 log::debug!(
+                    target: "workoss::app",
                     "registered for autostart? {}",
                     autostart_manager.is_enabled().unwrap()
                 );
 
                 // Disable autostart
-                let _ = autostart_manager.disable();
+                // let _ = autostart_manager.disable();
 
                 Ok(())
             })
     }
 
-    let mut app = builder
+    let app = builder
         .plugin(
             tauri_plugin_log::Builder::new()
                 // .clear_targets()
@@ -75,8 +90,11 @@ pub fn run() {
                     // tauri_plugin_log::Target::new(tauri_plugin_log::TargetKind::Webview)
                 ])
                 .timezone_strategy(tauri_plugin_log::TimezoneStrategy::UseLocal)
+                // .format(|out, message, record| {
+                //     out.finish(format_args!("[{} {}] {}",record.level(),record.target(),message))
+                //   })
                 .level(log::LevelFilter::Info)
-                .level_for("react_tauri_lib", log::LevelFilter::Debug)
+                .level_for("workoss::app", log::LevelFilter::Debug)
                 // .filter(|metadata| {
                 //     let target = metadata.target();
                 //     target == "app" || target == "migrate"
@@ -96,12 +114,16 @@ pub fn run() {
         .plugin(tauri_plugin_os::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_deep_link::init())
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![cmd::greet])
         .on_page_load(|webview, payload| {
             if payload.event() == PageLoadEvent::Finished {
                 let webview_ = webview.clone();
                 webview.listen("js-event", move |event| {
-                    println!("got js-event with message '{:?}'", event.payload());
+                    log::debug!(
+                        target: "workoss::app::listen",
+                        "got js-event with message '{:?}'",
+                        event.payload()
+                    );
                     let reply = Reply {
                         data: "something else".to_string(),
                     };
@@ -115,14 +137,17 @@ pub fn run() {
         .setup(move |app| {
             let mut webview_window_builder =
                 WebviewWindowBuilder::new(app, "main", WebviewUrl::default());
+            
             #[cfg(desktop)]
             {
                 webview_window_builder = webview_window_builder
-                    .user_agent(&format!("Workoss App - {}", std::env::consts::OS))
-                    .title("Workoss App Example")
-                    .inner_size(1000., 800.)
+                    .user_agent(&format!("workoss-app-{}", std::env::consts::OS))
+                    .title(app.config().product_name.as_ref().unwrap())
+                    .inner_size(800., 600.)
                     .min_inner_size(600., 400.)
-                    .visible(false);
+                    .visible(false)
+                    .resizable(false)
+                    .center();
             }
 
             #[cfg(target_os = "windows")]
@@ -130,18 +155,34 @@ pub fn run() {
                 webview_window_builder = webview_window_builder
                     .transparent(true)
                     .shadow(true)
-                    .decorations(false);
+                    .decorations(false)
+                    .additional_browser_args("--enable-features=msWebView2EnableDraggableRegions --disable-features=OverscrollHistoryNavigation,msExperimentalScrolling");
             }
 
             #[cfg(target_os = "macos")]
             {
-                webview_window_builder = webview_window_builder.transparent(true);
+                webview_window_builder = webview_window_builder
+                .transparent(true)
+                .decorations(false)
+                .hidden_title(true)
+                .shadow(true)
+                .title_bar_style(tauri::TitleBarStyle::Overlay)
             }
 
-            let webview = webview_window_builder.build().unwrap();
+            #[cfg(target_os = "linux")]
+            {
+                webview_window_builder = webview_window_builder
+                .transparent(true)
+                .decorations(false)
+            }
+
+            let _webview = webview_window_builder.build().unwrap();
 
             //Global AppHandle
             APP.get_or_init(|| app.handle().clone());
+
+            log::info!(target: "workoss::app","Init Config Store");
+            init_config(app)?;
 
             Ok(())
         })
@@ -151,22 +192,30 @@ pub fn run() {
 
     app.run(move |_app_handle, event| match event {
         #[cfg(desktop)]
-        RunEvent::ExitRequested { code, api, .. } => {
-            log::debug!("[EVENT] ExitRequested");
+        RunEvent::ExitRequested { .. } => {
+            log::debug!(target:"workoss::app::event", "ExitRequested");
             // if code.is_none() {
-            //     api.prevent_exit();
+            // api.prevent_exit();
             // }
         }
         RunEvent::WindowEvent { label, event, .. } => {
             if label != "main" {
                 return;
             }
-            if let tauri::WindowEvent::CloseRequested { api, .. } = event {
+            if let tauri::WindowEvent::CloseRequested { .. } = event {
                 //如果点击关闭 是退出软件
-                log::debug!("[EVENT] WindowEvent::CloseRequested");
+                log::debug!(
+                    target: "workoss::app::event",
+                    "WindowEvent::CloseRequested"
+                );
                 // api.prevent_close();
             }
         }
         _ => {}
     });
+    let prev = panic::take_hook();
+    panic::set_hook(Box::new(move |info| {
+        log::error!(target:"workoss::app","panic hook: {:?}",&info);
+        prev(info);
+    }));
 }

@@ -10,14 +10,11 @@
     "frontendDist": "../dist"
   },
   "app": {
-    "windows": [
-      {
-        "title": "react-tauri",
-        "width": 800,
-        "height": 600
-      }
-    ],
+    "withGlobalTauri": true,
+    "macOSPrivateApi": true,
+    "windows": [],
     "security": {
+      "freezePrototype": true,
       "headers": {
         "Access-Control-Expose-Headers": "Tauri-Custom-Header",
         "Tauri-Custom-Header": {
@@ -33,7 +30,16 @@
       },
       "assetProtocol": {
         "enable": false,
-        "scope": []
+        "scope": {
+          "allow": ["$APPDATA/db/**", "$RESOURCE/**"],
+          "deny": ["$APPDATA/db/*.stronghold"]
+        }
+      },
+      "pattern": {
+        "use": "isolation",
+        "options": {
+          "dir": "../isolation-dist/"
+        }
       }
     }
   },

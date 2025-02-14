@@ -1,10 +1,9 @@
-use std::sync::{Arc, Mutex};
 use std::{collections::HashMap, fs};
 
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
-use tauri::{Manager, Wry};
-use tauri_plugin_store::{Store, StoreExt as _};
+use tauri::Manager;
+use tauri_plugin_store::StoreExt as _;
 
 use crate::APP;
 

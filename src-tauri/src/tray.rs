@@ -1,6 +1,5 @@
-use std::{collections::HashMap, fs, path::Path, sync::OnceLock};
+use std::{collections::HashMap, sync::OnceLock};
 
-use anyhow::Context;
 use rust_embed::Embed;
 use serde_json::Value;
 use tauri::{menu::MenuItemBuilder, Runtime};

@@ -2,26 +2,24 @@ mod cmd;
 mod config;
 mod error;
 mod hotkey;
+mod window;
 
 #[cfg(desktop)]
 mod tray;
 
-use config::*;
-use hotkey::*;
-use tray::*;
+use crate::config::init_config;
+use crate::window::{create_main_window, get_main_window};
 
 use serde::Serialize;
 
 use std::{panic, sync::OnceLock};
-use tauri::{
-    webview::PageLoadEvent, Emitter, Listener, Manager as _, RunEvent, WebviewUrl,
-    WebviewWindowBuilder,
-};
-use tauri_plugin_autostart::{MacosLauncher, ManagerExt as _};
+use tauri::{webview::PageLoadEvent, Emitter, Listener, RunEvent};
+use tauri_plugin_autostart::MacosLauncher;
 
 pub static APP: OnceLock<tauri::AppHandle> = OnceLock::new();
 
-pub type SetupHook = Box<dyn FnOnce(&mut tauri::App) -> Result<(), Box<dyn std::error::Error>> + Send>;
+pub type SetupHook =
+    Box<dyn FnOnce(&mut tauri::App) -> Result<(), Box<dyn std::error::Error>> + Send>;
 pub type OnEvent = Box<dyn FnMut(&tauri::AppHandle, RunEvent)>;
 
 #[derive(Clone, Serialize)]
@@ -39,12 +37,13 @@ pub fn run() {
     #[cfg(desktop)]
     {
         builder = builder
-            .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
-                let _ = app
-                    .get_webview_window("main")
-                    .expect("no main window")
-                    .set_focus();
-            }))
+            .plugin(tauri_plugin_single_instance::init(
+                |app_handle, _args, _cwd| {
+                    if let Ok(windows) = get_main_window(app_handle) {
+                        let _ = windows.set_focus();
+                    }
+                },
+            ))
             .plugin(tauri_plugin_autostart::init(
                 MacosLauncher::LaunchAgent,
                 Some(vec!["--flag1", "--flag2"]),
@@ -52,29 +51,7 @@ pub fn run() {
             .plugin(tauri_plugin_cli::init())
             .plugin(tauri_plugin_global_shortcut::Builder::new().build())
             .plugin(tauri_plugin_updater::Builder::new().build())
-            .plugin(tauri_plugin_window_state::Builder::new().build())
-            .setup(move |app| {
-                #[cfg(target_os = "macos")]
-                {
-                    app.set_activation_policy(tauri::ActivationPolicy::Accessory);
-                }
-
-                // Get the autostart manager
-                let autostart_manager = app.autolaunch();
-                // Enable autostart
-                // let _ = autostart_manager.enable();
-                // Check enable state
-                log::debug!(
-                    target: "workoss::app",
-                    "registered for autostart? {}",
-                    autostart_manager.is_enabled().unwrap()
-                );
-
-                // Disable autostart
-                // let _ = autostart_manager.disable();
-
-                Ok(())
-            })
+            .plugin(tauri_plugin_window_state::Builder::new().build());
     }
 
     let app = builder
@@ -87,7 +64,6 @@ pub fn run() {
                     tauri_plugin_log::Target::new(tauri_plugin_log::TargetKind::LogDir {
                         file_name: None,
                     }),
-                    // tauri_plugin_log::Target::new(tauri_plugin_log::TargetKind::Webview)
                 ])
                 .timezone_strategy(tauri_plugin_log::TimezoneStrategy::UseLocal)
                 // .format(|out, message, record| {
@@ -135,49 +111,11 @@ pub fn run() {
             }
         })
         .setup(move |app| {
-            let mut webview_window_builder =
-                WebviewWindowBuilder::new(app, "main", WebviewUrl::default());
-            
-            #[cfg(desktop)]
-            {
-                webview_window_builder = webview_window_builder
-                    .user_agent(&format!("workoss-app-{}", std::env::consts::OS))
-                    .title(app.config().product_name.as_ref().unwrap())
-                    .inner_size(800., 600.)
-                    .min_inner_size(600., 400.)
-                    .visible(false)
-                    .resizable(false)
-                    .center();
-            }
-
-            #[cfg(target_os = "windows")]
-            {
-                webview_window_builder = webview_window_builder
-                    .transparent(true)
-                    .shadow(true)
-                    .decorations(false)
-                    .additional_browser_args("--enable-features=msWebView2EnableDraggableRegions --disable-features=OverscrollHistoryNavigation,msExperimentalScrolling");
-            }
-
             #[cfg(target_os = "macos")]
             {
-                webview_window_builder = webview_window_builder
-                .transparent(true)
-                .decorations(false)
-                .hidden_title(true)
-                .shadow(true)
-                .title_bar_style(tauri::TitleBarStyle::Overlay)
+                app.set_activation_policy(tauri::ActivationPolicy::Regular);
             }
-
-            #[cfg(target_os = "linux")]
-            {
-                webview_window_builder = webview_window_builder
-                .transparent(true)
-                .decorations(false)
-            }
-
-            let _webview = webview_window_builder.build().unwrap();
-
+            create_main_window(app)?;
             //Global AppHandle
             APP.get_or_init(|| app.handle().clone());
 

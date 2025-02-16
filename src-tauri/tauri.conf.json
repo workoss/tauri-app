@@ -61,7 +61,8 @@
     "category": "Developer Tools",
     "shortDescription": "A React app built with Tauri",
     "longDescription": "A React app built with Tauri - developer tools",
-    "createUpdaterArtifacts": true
+    "createUpdaterArtifacts": true,
+    "externalBin": ["binaries/app"]
   },
   "plugins": {
     "updater": {

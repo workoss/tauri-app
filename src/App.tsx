@@ -13,6 +13,12 @@ function App() {
     setGreetMsg(await invoke('greet', { name }));
   }
 
+  async function runSidecar() {
+    console.log('----------');
+    const msg = await invoke('ping', { message: 'world' });
+    console.log(`output:${msg}`);
+  }
+
   return (
     <main className='container'>
       <h1>Welcome to Tauri + React</h1>
@@ -50,6 +56,7 @@ function App() {
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
+        <button onClick={() => runSidecar()}>sidecar</button>
       </div>
     </main>
   );

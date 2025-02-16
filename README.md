@@ -13,3 +13,5 @@ cargo install --locked cargo-xwin
 pnpm tauri build --runner cargo-xwin --target x86_64-pc-windows-msvc
 
 features = ["macros", "rt", "net", "io-util"]
+
+sk-38d3edd2d0654a32bebe6570649e7faf

@@ -29,7 +29,7 @@ fn create_window(
             .inner_size(800., 600.)
             .min_inner_size(600., 400.)
             .visible(false)
-            .always_on_top(true)
+            .always_on_top(false)
             .resizable(true) //max
             .center();
     }

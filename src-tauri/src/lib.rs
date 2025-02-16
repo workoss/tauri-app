@@ -90,7 +90,7 @@ pub fn run() {
         .plugin(tauri_plugin_os::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_deep_link::init())
-        .invoke_handler(tauri::generate_handler![cmd::greet])
+        .invoke_handler(tauri::generate_handler![cmd::greet, cmd::ping])
         .on_page_load(|webview, payload| {
             if payload.event() == PageLoadEvent::Finished {
                 let webview_ = webview.clone();

@@ -1,0 +1,30 @@
+{
+  "name": "sidecar-app",
+  "version": "1.0.0",
+  "description": "",
+  "bin": "index.js",
+  "scripts": {
+    "build": "pkg --sea --compress GZip --debug --public .",
+    "move": "node move.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "workoss@icloud.com",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^5.0.1"
+  },
+  "devDependencies": {
+    "@yao-pkg/pkg": "^6.3.0"
+  },
+  "pkg": {
+    "assets": [
+      "views/**/*"
+    ],
+    "targets": [
+      "node23-linux-x64",
+      "node23-macos-x64",
+      "node23-windows-x64"
+    ]
+  }
+}

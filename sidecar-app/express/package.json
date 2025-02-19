@@ -1,5 +1,5 @@
 {
-  "name": "sidecar-app",
+  "name": "express",
   "version": "1.0.0",
   "description": "",
   "bin": "index.js",
@@ -11,7 +11,20 @@
   "keywords": [],
   "author": "workoss@icloud.com",
   "license": "MIT",
+  "dependencies": {
+    "express": "^5.0.1"
+  },
   "devDependencies": {
-    "tinyglobby": "^0.2.11"
+    "@yao-pkg/pkg": "^6.3.1"
+  },
+  "pkg": {
+    "assets": [
+      "views/**/*"
+    ],
+    "targets": [
+      "node23-linux-x64",
+      "node23-macos-x64",
+      "node23-windows-x64"
+    ]
   }
 }

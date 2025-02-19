@@ -9,10 +9,11 @@ mod tray;
 
 use crate::config::init_config;
 use crate::window::{create_main_window, get_main_window};
+use error as app_error;
 
 use serde::Serialize;
 
-use std::{panic, sync::OnceLock};
+use std::sync::OnceLock;
 use tauri::{webview::PageLoadEvent, Emitter, Listener, RunEvent};
 use tauri_plugin_autostart::MacosLauncher;
 
@@ -151,9 +152,6 @@ pub fn run() {
         }
         _ => {}
     });
-    let prev = panic::take_hook();
-    panic::set_hook(Box::new(move |info| {
-        log::error!(target:"workoss::app","panic hook: {:?}",&info);
-        prev(info);
-    }));
+
+    app_error::panic_hook();
 }

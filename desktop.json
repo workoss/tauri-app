@@ -7,16 +7,6 @@
     "cli:default",
     "global-shortcut:default",
     "updater:default",
-    "window-state:default",
-    {
-      "identifier": "shell:allow-execute",
-      "allow": [
-        {
-          "name": "express",
-          "sidecar": true
-        }
-      ]
-    },
-    "shell:allow-open"
+    "window-state:default"
   ]
 }

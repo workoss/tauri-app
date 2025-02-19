@@ -84,6 +84,33 @@ const matchAssets = (pkgAssets, sourceDirName) => {
 //   return filterFiles;
 // };
 
+const syslink = (sourceDir, targetDir) => {
+  const files = fs.readdirSync(`${sourceDir}`, { withFileTypes: true });
+
+  const sourcePath = path.resolve(sourceDir);
+  const targetPath = path.resolve(targetDir);
+
+  files
+    .filter((file) => {
+      return file.isSymbolicLink();
+    })
+    .forEach((file) => {
+      const sourceLinkPath = `${targetPath}/${file.name}`;
+
+      console.log(`开始link ${sourceLinkPath}`); // 输出文件夹名称
+
+      let linkInfo = fs.readlinkSync(`${sourceLinkPath}`, {});
+      linkInfo = linkInfo.replace(`${sourcePath}/`, '');
+
+      const targetLinkPath = `${targetPath}/${linkInfo}`;
+      console.log(`link:${sourceLinkPath}->${targetLinkPath}`);
+
+      fs.rmSync(sourceLinkPath, { recursive: true, force: true });
+
+      fs.symlinkSync(targetLinkPath, sourceLinkPath);
+    });
+};
+
 const move = (dirfile) => {
   const dir = `${dirfile.parentPath}${dirfile.name}`;
   const jsonData = JSON.parse(
@@ -123,6 +150,7 @@ const move = (dirfile) => {
     fs.cpSync(`${dir}/node_modules`, `${destDir}/node_modules`, {
       recursive: true,
     });
+    syslink(`${dir}/node_modules`, `${destDir}/node_modules`);
   }
 };
 

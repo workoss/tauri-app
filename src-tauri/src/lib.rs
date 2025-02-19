@@ -70,8 +70,8 @@ pub fn run() {
                 // .format(|out, message, record| {
                 //     out.finish(format_args!("[{} {}] {}",record.level(),record.target(),message))
                 //   })
-                .level(log::LevelFilter::Info)
-                .level_for("workoss::app", log::LevelFilter::Debug)
+                .level(log::LevelFilter::Trace)
+                // .level_for("workoss::app", log::LevelFilter::Debug)
                 // .filter(|metadata| {
                 //     let target = metadata.target();
                 //     target == "app" || target == "migrate"
@@ -91,7 +91,11 @@ pub fn run() {
         .plugin(tauri_plugin_os::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_deep_link::init())
-        .invoke_handler(tauri::generate_handler![cmd::greet, cmd::ping])
+        .invoke_handler(tauri::generate_handler![
+            cmd::greet,
+            cmd::ping,
+            cmd::express
+        ])
         .on_page_load(|webview, payload| {
             if payload.event() == PageLoadEvent::Finished {
                 let webview_ = webview.clone();
@@ -108,6 +112,20 @@ pub fn run() {
                     webview_
                         .emit("rust-event", Some(reply))
                         .expect("failed to emit");
+                });
+                webview.listen("sidecar-stdout", move |event| {
+                    log::debug!(
+                        target: "workoss::app::listen",
+                        "got sidecar-stdout with message '{:?}'",
+                        event.payload()
+                    );
+                });
+                webview.listen("sidecar-stderr", move |event| {
+                    log::debug!(
+                        target: "workoss::app::listen",
+                        "got sidecar-stderr with message '{:?}'",
+                        event.payload()
+                    );
                 });
             }
         })

@@ -53,7 +53,9 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
-    "resources": ["icons/icon.png"],
+    "resources": {
+      "icons/icon.png": "icons/"
+    },
     "publisher": "Workoss Desktop",
     "copyright": "Copyright 2025",
     "licenseFile": "../LICENSE",
@@ -70,9 +72,6 @@
       "endpoints": [
         "https://github.com/workoss/react-tauri/releases/latest/download/latest.json"
       ]
-    },
-    "shell": {
-      "open": true
     },
     "cli": {
       "description": "react tauri example",

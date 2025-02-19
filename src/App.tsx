@@ -13,9 +13,14 @@ function App() {
     setGreetMsg(await invoke('greet', { name }));
   }
 
-  async function runSidecar() {
+  async function runAppSidecar() {
     console.log('----------');
     const msg = await invoke('ping', { message: 'world' });
+    console.log(`output:${msg}`);
+  }
+
+  async function runExpressSidecar() {
+    const msg = await invoke('express');
     console.log(`output:${msg}`);
   }
 
@@ -56,7 +61,8 @@ function App() {
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
-        <button onClick={() => runSidecar()}>sidecar</button>
+        <button onClick={() => runAppSidecar()}>ping-sidecar</button>
+        <button onClick={() => runExpressSidecar()}>express</button>
       </div>
     </main>
   );

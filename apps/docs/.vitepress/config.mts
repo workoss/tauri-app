@@ -50,12 +50,12 @@ export default defineConfig({
 
   markdown: {
     config: (md) => {
+      //md 支持 typst
       md.use(vitepressDemoPlugin, {
         demodir: path.resolve(
           dirname(fileURLToPath(import.meta.url)),
           "../demos",
         ),
-
         stackblitz: {
           show: true,
           templates: [
@@ -67,7 +67,6 @@ export default defineConfig({
             },
           ],
         },
-
         codesandbox: {
           show: false,
           templates: [

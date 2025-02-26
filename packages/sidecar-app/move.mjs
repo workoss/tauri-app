@@ -9,6 +9,8 @@ import { globSync } from "tinyglobby";
 //   `../src-tauri/binaries/sidecar-app-${targetTriple}${ext}`,
 // );
 
+const BINARIES_PATH = `../../apps/workoss-app/src-tauri/binaries`;
+
 const copyAppExe = (name, sourceDirName) => {
   const appNames = [`${name}-macos`, `${name}-linux`, `${name}-win.exe`];
 
@@ -35,7 +37,7 @@ const copyAppExe = (name, sourceDirName) => {
     }
     fs.renameSync(
       `${sourceDirName}/${key}`,
-      `../src-tauri/binaries/${name}/${value}`,
+      `${BINARIES_PATH}/${name}/${value}`,
     );
   }
 };
@@ -55,9 +57,9 @@ const copyFiles = (sourceFiles) => {
     return;
   }
   for (const filePath of sourceFiles) {
-    const destPath = `../src-tauri/binaries/${filePath}`;
+    const destPath = `${BINARIES_PATH}/${filePath}`;
     ensureDirectoryExistence(destPath);
-    fs.copyFileSync(filePath, `../src-tauri/binaries/${filePath}`);
+    fs.copyFileSync(filePath, `${BINARIES_PATH}/${filePath}`);
   }
 };
 
@@ -119,7 +121,7 @@ const move = (dirfile) => {
   const name = jsonData.name;
 
   //目标文件夹，没有则创建
-  const destDir = `../src-tauri/binaries/${name}`;
+  const destDir = `${BINARIES_PATH}/${name}`;
   if (!fs.existsSync(destDir)) {
     fs.mkdirSync(destDir, { recursive: true });
   }

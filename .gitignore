@@ -26,5 +26,8 @@ dist-ssr
 .cache
 *.tsbuildinfo
 vite.config.js
-
+.vitepress/cache/
+.cache
 .vitepress/cache
+pnpm-lock.yaml
+/apps/docs/.vitepress/cache/

@@ -26,3 +26,5 @@ dist-ssr
 .cache
 *.tsbuildinfo
 vite.config.js
+
+.vitepress/cache

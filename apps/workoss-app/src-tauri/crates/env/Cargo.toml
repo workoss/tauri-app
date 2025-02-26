@@ -1,0 +1,7 @@
+[package]
+description = "环境变量"
+edition.workspace = true
+name = "env"
+version.workspace = true
+
+[dependencies]

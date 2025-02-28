@@ -1,0 +1,14 @@
+{
+  "name": "typescript-config",
+  "version": "1.0.0",
+  "description": "typescript config",
+  "keywords": [
+    "typescript",
+    "config"
+  ],
+  "author": "workoss",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "~5.7.3"
+  }
+}

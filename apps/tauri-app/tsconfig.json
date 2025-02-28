@@ -1,43 +1,10 @@
 {
+  "extends": "./node_modules/typescript-config/react.json",
   "compilerOptions": {
-    "target": "ES2020", //编译后代码目标版本
-    "module": "ESNext", //使用模块化类型， ESNext 支持动态导入等
-    "lib": ["ES2020", "DOM", "DOM.Iterable"], //包含库文件，ES2020 ts基础依赖
-    "useDefineForClassFields": true, 
-    "skipLibCheck": true, //跳过编译器对引入文件检查
-    "allowJs": true, //允许编译js文件
-
-    /* Bundler mode */
-    "moduleResolution": "bundler",
-    "sourceMap": true, //输出.map文件
-    "declaration": false, //输出.d.ts文件
-    "preserveWatchOutput": true, //watch 先去编译文件，避免增量编译删除
-    "removeComments": true, //删除注释
-    "allowImportingTsExtensions": true, //允许import .ts , .tsx 文件,不需要扩展名
-    "resolveJsonModule": true, //支持import json文件
-    "isolatedModules": true, //ts处理每个文件独立单元，加快编译
-    "noEmit": true, //编译器不生产任何js文件
-    "jsx": "react-jsx",
-    // 使 TypeScript 可以更好地与 CommonJS 模块兼容。在使用 CommonJS 模块系统时，导出的模块将会被包装在一个对象中，这是因为 CommonJS 使用的是类似于 module.exports 的语法来导出模块。
-		// 而某些工具和库可能需要以 ES6 模块的方式导入这些 CommonJS 模块，这时候就可以开启 esModuleInterop 选项。
-		// 开启后，在导入 CommonJS 模块时不需要再使用默认导出才能正确引入，也不需要手动处理 require() 和 module.exports。
-    "esModuleInterop": true,
-
-    /* Linting */
-    "strict": true, //启用所有严格类型检查
-    "strictNullChecks": true, //启用null检查
-    "noImplicitAny": false, //允许隐式any类型
-    "noUnusedLocals": true, //消除未使用的变量的警告
-    "noUnusedParameters": true, //消除未使用的参数的警告
-    "noFallthroughCasesInSwitch": true, //消除switch语句中的fallthrough警告
-    "useUnknownInCatchVariables": false, //使用未知类型代替any类型
-    // "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "#/*": ["./types/*"],
-    },
+      "#/*": ["./types/*"]
+    }
   },
-  "include": ["src","types"],
-  "exclude": [],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["src", "types", "vite.config.ts"]
 }

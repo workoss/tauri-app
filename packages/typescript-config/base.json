@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "useDefineForClassFields": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+
+    "composite": true,
+    "moduleResolution": "bundler",
+    "sourceMap": true,
+    "declaration": false,
+    "preserveWatchOutput": true,
+    "removeComments": true,
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+
+    "esModuleInterop": true,
+
+    "strict": true,
+    "strictNullChecks": true,
+    "incremental": true,
+    "noImplicitAny": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "useUnknownInCatchVariables": false
+  }
+}

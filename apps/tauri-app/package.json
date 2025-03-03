@@ -25,7 +25,7 @@
     "@ant-design/cssinjs": "^1.23.0",
     "@ant-design/icons": "^5.6.1",
     "@ant-design/pro-components": "^2.8.6",
-    "@tauri-apps/api": "~2.2.0",
+    "@tauri-apps/api": "~2.3.0",
     "@tauri-apps/plugin-autostart": "~2.2.0",
     "@tauri-apps/plugin-cli": "~2.2.0",
     "@tauri-apps/plugin-clipboard-manager": "~2.2.1",

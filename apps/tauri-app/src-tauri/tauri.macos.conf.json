@@ -31,7 +31,7 @@
       },
       "frameworks": [],
       "exceptionDomain": "",
-      "signingIdentity": "9DD8B0CBDD6D78089555FC3DC6F79B8BB720A432",
+      "signingIdentity": null,
       "entitlements": null,
       "minimumSystemVersion": "10.13"
     }

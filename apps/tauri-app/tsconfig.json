@@ -1,6 +1,7 @@
 {
   "extends": "./node_modules/typescript-config/react.json",
   "compilerOptions": {
+    "declaration": true,
     "paths": {
       "@/*": ["./src/*"],
       "#/*": ["./types/*"]

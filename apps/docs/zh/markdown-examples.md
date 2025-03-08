@@ -85,9 +85,9 @@ This is a details block.
 Check out the documentation for the [full list of markdown extensions](https://vitepress.dev/guide/markdown).
 
 <demo 
-  react="demos/demo.tsx"
-  vue="demos/demo.vue"
-  html="demos/demo.html"
+  react="../demos/demo.tsx"
+  vue="../demos/demo.vue"
+  html="../demos/demo.html"
   order="react,vue,html"
   select="react"
   stackblitz="true" 
@@ -96,13 +96,13 @@ Check out the documentation for the [full list of markdown extensions](https://v
 ## antd
 
 ```tsx
-<demo react="demos/antd.tsx" stackblitz="true" codesandbox="true" />
+<demo react="../demos/antd.tsx" stackblitz="true" codesandbox="true" />
 ```
 
-<demo react="demos/antd.tsx" stackblitz="true" codesandbox="true" />
+<demo react="../demos/antd.tsx" stackblitz="true" codesandbox="true" />
 
 ```tsx
-<demo vue="demos/ele.vue" scope="element" />
+<demo vue="../demos/ele.vue" scope="element" />
 ```
 
-<demo vue="demos/ele.vue" scope="element" />
+<demo vue="../demos/ele.vue" scope="element" />

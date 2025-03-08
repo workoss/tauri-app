@@ -7,23 +7,27 @@
     "tauri": "pnpm --filter workoss-app run tauri",
     "docs:dev": "pnpm --filter docs run docs:dev",
     "clean": "rimraf node_modules",
-    "lint:fix": "eslint --fix"
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "format:check": "prettier --check */src --cache",
+    "format:write": "prettier --write '**/src' --cache",
+    "prepare": "husky"
   },
   "workspaces": [
     "packages/*",
     "apps/*"
   ],
   "devDependencies": {
-    "@commitlint/cli": "^19.7.1",
-    "@commitlint/config-conventional": "^19.7.1",
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
     "@eslint/js": "^9.21.0",
-    "@types/node": "^22.13.5",
+    "@types/node": "^22.13.9",
+    "eslint-config": "workspace:*",
     "husky": "^9.1.7",
     "lint-staged": "^15.4.3",
-    "prettier": "^3.5.2",
+    "prettier": "^3.5.3",
     "rimraf": "^6.0.1",
-    "typescript": "~5.7.3",
-    "eslint-config": "workspace:*"
+    "typescript": "^5.8.2"
   },
   "engines": {
     "node": ">=22.x"

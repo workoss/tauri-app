@@ -1,5 +1,5 @@
-import chalk from 'chalk';
-import ProgressBar from 'progress';
+import chalk from "chalk";
+import ProgressBar from "progress";
 
 const common_text = chalk.blue;
 const info_text = chalk.green;
@@ -9,10 +9,10 @@ const debug_text = chalk.gray;
 
 export const downloadProgressBar = (total) => {
   const progressBar = new ProgressBar(
-    chalk.green('downloading [:bar] :rate/bps :percent :etas'),
+    chalk.green("downloading [:bar] :rate/bps :percent :etas"),
     {
-      complete: '=',
-      incomplete: ' ',
+      complete: "=",
+      incomplete: " ",
       width: 20,
       total: total,
     },

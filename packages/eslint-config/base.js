@@ -1,44 +1,28 @@
-import js from "@eslint/js";
-import eslintConfigPrettier from "eslint-config-prettier";
-import tseslint from "typescript-eslint";
-import onlyWarn from "eslint-plugin-only-warn";
 import globals from "globals";
+import pluginJs from "@eslint/js";
+import tseslint from "typescript-eslint";
+import eslintConfigPrettier from "eslint-config-prettier/flat";
+import onlyWarn from "eslint-plugin-only-warn";
 
-/**
- * base eslint config
- *
- * @type {import('eslint').Linter.Config}
- */
+/** @type {import('eslint').Linter.Config[]} */
 export const config = [
-  js.configs.recommended,
-  eslintConfigPrettier,
-  ...tseslint.configs.recommended,
+  { files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"] },
   {
-    plugins: {
-      onlyWarn,
-    },
-    languageOptions: {
-      globals: {
-        ...globals.serviceworker,
-        ...globals.browser,
-        ...globals.node,
-      },
-    },
+    settings: { react: { version: "detect" } },
+    languageOptions: { globals: globals.browser },
+  },
+  pluginJs.configs.recommended,
+  ...tseslint.configs.recommended,
+  eslintConfigPrettier,
+  {
+    plugins: { onlyWarn },
+  },
+  {
     rules: {
       "@typescript-eslint/no-unused-expressions": [
         "error",
         { allowShortCircuit: true },
       ],
-    },
-    settings: {
-      "import/parsers": {
-        "@typescript-eslint/parser": [".ts", ".tsx"],
-      },
-      "import/resolver": {
-        typescript: {
-          alwaysTryTypes: true,
-        },
-      },
     },
   },
   {

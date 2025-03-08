@@ -12,7 +12,7 @@
   "author": "workoss@icloud.com",
   "license": "MIT",
   "devDependencies": {
-    "@yao-pkg/pkg": "^6.3.1"
+    "@yao-pkg/pkg": "^6.3.2"
   },
   "pkg": {
     "assets": [],

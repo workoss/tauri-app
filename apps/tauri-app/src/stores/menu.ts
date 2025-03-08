@@ -1,6 +1,6 @@
-import { create, StateCreator } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
-import { MenuDataItem } from '@ant-design/pro-components';
+import { create, StateCreator } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
+import { MenuDataItem } from "@ant-design/pro-components";
 
 interface MenuState {
   menus: MenuDataItem[];
@@ -9,7 +9,7 @@ interface MenuState {
 
 const menuPersist = (initializer: StateCreator<MenuState>) =>
   persist(initializer, {
-    name: 'menus',
+    name: "menus",
     storage: createJSONStorage(() => sessionStorage),
   });
 

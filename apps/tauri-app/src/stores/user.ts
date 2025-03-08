@@ -1,5 +1,5 @@
-import { create, StateCreator } from 'zustand';
-import { createJSONStorage, persist, devtools } from 'zustand/middleware';
+import { create, StateCreator } from "zustand";
+import { createJSONStorage, persist, devtools } from "zustand/middleware";
 
 interface TokenState {
   token: string;
@@ -9,14 +9,14 @@ interface TokenState {
 const tokenPersist = (initializer: StateCreator<TokenState>) =>
   devtools(
     persist(initializer, {
-      name: 'token',
+      name: "token",
       storage: createJSONStorage(() => sessionStorage),
     }),
   );
 
 export const useTokenStore = create<TokenState>()(
   tokenPersist((set) => ({
-    token: '',
+    token: "",
     setToken: (token: string) => set({ token }),
   })),
 );
